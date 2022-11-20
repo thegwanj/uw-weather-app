@@ -70,6 +70,13 @@ function fetchOneCallWeather(lat, lon, cityName){
         <div class="overview" id="current">
             <h1>${cityName} (Current)</h1>
 
+            <p>Temp: </p>
+            <p>Wind: </p>
+            <p>Humidity: </p>
+            <p>UV Index: </p>
+        </div>
+        <div class="forcast" id="forcast">
+            <h3>5-Day Forcast:</h3>
         </div>
         `;
 
@@ -77,6 +84,8 @@ function fetchOneCallWeather(lat, lon, cityName){
         try {
             var currentWeather = document.getElementById('current');
             currentWeather.remove();
+            var forcastEl = document.getElementById('forcast');
+            forcastEl.remove();
         }
         catch (error){
             console.error(error);
