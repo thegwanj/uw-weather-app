@@ -1,6 +1,8 @@
 var apiKey = '70603af3e62af0e02116a806e050a69c';
 var cityBtn = document.getElementById('submit');
 var input = document.getElementById('input');
+var weatherEl = document.getElementById('weather');
+var historyEl = document.getElementById('history');
 
 // Submit the form to fetch the weather information
 
@@ -37,12 +39,21 @@ function fetchGeolocation(cityName){
             console.log(lon);
 
             // Call fetchOneCallWeather and pass through the lat and lon
-            fetchOneCallWeather(lat, lon);
+            fetchOneCallWeather(lat, lon, cityName);
+
+            // Render and add on to search history
+            var outputHTML = document.createElement('div');
+            outputHTML.innerHTML = `
+            <div class="row">
+                <p>${cityName}</p>
+            </div>
+            `;
+            historyEl.appendChild(outputHTML);    
         });
 }
 
 // Fetch the weather data (Onecall)
-function fetchOneCallWeather(lat, lon){
+function fetchOneCallWeather(lat, lon, cityName){
 
     var request = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&units=imperial&appid=70603af3e62af0e02116a806e050a69c`;
 
@@ -54,6 +65,23 @@ function fetchOneCallWeather(lat, lon){
         console.log(data);
 
         // Render/display the weather data
+        var outputHTML = document.createElement('div');
+        outputHTML.innerHTML = `
+        <div class="overview" id="current">
+            <h1>${cityName} (Current)</h1>
+
+        </div>
+        `;
+
+        // Clears weather then renders the new search
+        try {
+            var currentWeather = document.getElementById('current');
+            currentWeather.remove();
+        }
+        catch (error){
+            console.error(error);
+        }
+        weatherEl.appendChild(outputHTML);
     })
 
 }
