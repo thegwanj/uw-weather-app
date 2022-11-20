@@ -22,15 +22,20 @@ function fetchGeolocation(cityName){
         })
         .then(function(data) {
             console.log(data);
-        })
+
+            // Access lat and lon from data
+
+            // Call fetchOneCallWeather and pass through the lat and lon
+
+        });
 }
 
 fetchGeolocation("Seattle");
 
 // Fetch the weather data (Onecall)
-function fetchOneCallWeather(){
+function fetchOneCallWeather(lat, lon){
 
-    var request = `https://api.openweathermap.org/data/2.5/onecall?lat=47.6038321&lon=-122.330062&exclude=hourly,minutely&units=imperial&appid=70603af3e62af0e02116a806e050a69c`;
+    var request = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&units=imperial&appid=70603af3e62af0e02116a806e050a69c`;
 
     fetch(request)
     .then(function(response) {
@@ -38,6 +43,8 @@ function fetchOneCallWeather(){
     })
     .then(function(data) {
         console.log(data);
+
+        // Render/display the weather data
     })
 
 }
