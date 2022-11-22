@@ -63,6 +63,16 @@ function fetchOneCallWeather(lat, lon, cityName){
     })
     .then(function(data) {
         console.log(data);
+        console.log(data.daily[0].temp);
+        // Averages the min and max temperature of that day
+        console.log(Math.round((data.daily[0].temp.min + data.daily[0].temp.max) / 2));
+
+        // Collect and store data under variable names
+        // Current Day
+        var currentTemp = Math.round((data.daily[0].temp.min + data.daily[0].temp.max) / 2);
+        var currentWind = data.daily[0].wind_speed;
+        var currentHumidity = data.daily[0].humidity;
+        var currentUVI = data.daily[0].uvi;
 
         // Render/display the weather data
         var outputHTML = document.createElement('div');
@@ -70,10 +80,10 @@ function fetchOneCallWeather(lat, lon, cityName){
         <div class="overview" id="current">
             <h1>${cityName} (Current)</h1>
 
-            <p>Temp: </p>
-            <p>Wind: </p>
-            <p>Humidity: </p>
-            <p>UV Index: </p>
+            <p>Temp: ${currentTemp}\u00B0F</p>
+            <p>Wind: ${currentWind} MPH</p>
+            <p>Humidity: ${currentHumidity}%</p>
+            <p>UV Index: ${currentUVI}</p>
         </div>
         <div class="forcast" id="forcast">
             <h3>5-Day Forcast:</h3>
