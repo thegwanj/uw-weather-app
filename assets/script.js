@@ -23,7 +23,7 @@ function getLocation(){
 
 // Fetch geolocation data (Geocoding API)
 function fetchGeolocation(cityName){
-    var request = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=70603af3e62af0e02116a806e050a69c`;
+    var request = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=70603af3e62af0e02116a806e050a69c`;
     
     fetch(request)
         .then(function(response) {
@@ -74,6 +74,19 @@ function fetchOneCallWeather(lat, lon, cityName){
         var currentWind = data.daily[0].wind_speed;
         var currentHumidity = data.daily[0].humidity;
         var currentUVI = data.daily[0].uvi;
+        var uviCondition;
+
+        if(currentUVI >= 11){
+            uviCondition = 'uviExtreme';
+        } else if(currentUVI >= 8){
+            uviCondition = 'uviVeryHigh';
+        } else if(currentUVI >= 6){
+            uviCondition = 'uviHigh';
+        } else if(currentUVI >= 3){
+            uviCondition = 'uviModerate';
+        } else{
+            uviCondition = 'uviLow';
+        }
 
         // Clears weather to get ready to render the new search
         try {
@@ -91,11 +104,11 @@ function fetchOneCallWeather(lat, lon, cityName){
         outputHTML.innerHTML = `
         <div class="overview" id="current">
             <h1>${cityName} (Current)</h1>
-        
+            <img src="http://openweathermap.org/img/wn/${data.daily[0].weather[0].icon}.png">
             <p>Temp: ${currentTemp}\u00B0F</p>
             <p>Wind: ${currentWind} MPH</p>
             <p>Humidity: ${currentHumidity}%</p>
-            <p>UV Index: ${currentUVI}</p>
+            <p class="${uviCondition}">UV Index: ${currentUVI}</p>
         </div>
         <div class="forcastRow" id="forcast">
             <h3>5-Day Forcast:</h3>
@@ -105,6 +118,8 @@ function fetchOneCallWeather(lat, lon, cityName){
         weatherEl.appendChild(outputHTML);
 
         var forcastEl = document.getElementById('forcast');
+        var date = new Date();
+        date.setDate(date.getDate());
 
         // Rendering the 5-day forcast to the forcastEl
         for(i = 1; i < 6; i++){
@@ -113,9 +128,15 @@ function fetchOneCallWeather(lat, lon, cityName){
             var wind = data.daily[i].wind_speed;
             var humidity = data.daily[i].humidity;
 
+            // Creating the date string
+            date.setDate(date.getDate()+1);
+            var dateString = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+
             outputHTML = document.createElement('div');
             outputHTML.innerHTML = `
             <div class="forcastItem">
+                <h4>${dateString}</h4>
+                <img src="http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}.png">
                 <p>Temp: ${temp}\u00B0F</p>
                 <p>Wind: ${wind} MPH</p>
                 <p>Humidity: ${humidity}%</p>
