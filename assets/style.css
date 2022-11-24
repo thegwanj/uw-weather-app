@@ -1,0 +1,29 @@
+.uviExtreme{
+    background-color: indigo;
+}
+
+.uviVeryHigh{
+    background-color: red;
+}
+
+.uviHigh{
+    background-color: orangered;
+}
+
+.uviModerate{
+    background-color: yellow;
+}
+
+.uviLow{
+    background-color: rgb(0, 179, 0);
+}
+
+.overview{
+    border: 1px solid black;
+}
+
+.forcastItem{
+    border: 1px solid navy;
+    color: white;
+    background-color: navy;
+}
