@@ -4,13 +4,6 @@ var input = document.getElementById('input');
 var weatherEl = document.getElementById('weather');
 var historyEl = document.getElementById('history');
 
-// Submit the form to fetch the weather information
-
-    // Fetch the city name from the text input
-
-    // Call the fetchGeolocation and pass the city name
-    //fetchGeolocation(cityName);
-
 // Handle button clicks to fetch weather information
 cityBtn.addEventListener('click', getLocation);
 
@@ -94,6 +87,8 @@ function fetchOneCallWeather(lat, lon, cityName){
             currentWeather.remove();
             var forcastEl = document.getElementById('forcast');
             forcastEl.remove();
+            var forcastHeader = document.getElementById('forcastHeader');
+            forcastHeader.remove();
         }
         catch (error){
             console.error(error);
@@ -110,8 +105,8 @@ function fetchOneCallWeather(lat, lon, cityName){
             <p>Humidity: ${currentHumidity}%</p>
             <p class="${uviCondition}">UV Index: ${currentUVI}</p>
         </div>
+        <h3 id="forcastHeader">5-Day Forcast:</h3>
         <div class="forcastRow" id="forcast">
-            <h3>5-Day Forcast:</h3>
         </div>
         `;
 
