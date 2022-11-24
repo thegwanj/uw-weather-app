@@ -24,7 +24,7 @@ function getLocation(){
 // Fetch geolocation data (Geocoding API)
 function fetchGeolocation(cityName){
     var request = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=70603af3e62af0e02116a806e050a69c`;
-
+    
     fetch(request)
         .then(function(response) {
             return response.json();
@@ -48,7 +48,8 @@ function fetchGeolocation(cityName){
                 <p>${cityName}</p>
             </div>
             `;
-            historyEl.appendChild(outputHTML);    
+
+            historyEl.appendChild(outputHTML);
         });
 }
 
@@ -63,9 +64,9 @@ function fetchOneCallWeather(lat, lon, cityName){
     })
     .then(function(data) {
         console.log(data);
-        console.log(data.daily[0].temp);
+        //console.log(data.daily[0].temp);
         // Averages the min and max temperature of that day
-        console.log(Math.round((data.daily[0].temp.min + data.daily[0].temp.max) / 2));
+        //console.log(Math.round((data.daily[0].temp.min + data.daily[0].temp.max) / 2));
 
         // Collect and store data under variable names
         // Current Day
@@ -74,23 +75,7 @@ function fetchOneCallWeather(lat, lon, cityName){
         var currentHumidity = data.daily[0].humidity;
         var currentUVI = data.daily[0].uvi;
 
-        // Render/display the weather data
-        var outputHTML = document.createElement('div');
-        outputHTML.innerHTML = `
-        <div class="overview" id="current">
-            <h1>${cityName} (Current)</h1>
-
-            <p>Temp: ${currentTemp}\u00B0F</p>
-            <p>Wind: ${currentWind} MPH</p>
-            <p>Humidity: ${currentHumidity}%</p>
-            <p>UV Index: ${currentUVI}</p>
-        </div>
-        <div class="forcast" id="forcast">
-            <h3>5-Day Forcast:</h3>
-        </div>
-        `;
-
-        // Clears weather then renders the new search
+        // Clears weather to get ready to render the new search
         try {
             var currentWeather = document.getElementById('current');
             currentWeather.remove();
@@ -99,8 +84,46 @@ function fetchOneCallWeather(lat, lon, cityName){
         }
         catch (error){
             console.error(error);
-        }
-        weatherEl.appendChild(outputHTML);
-    })
+        };
 
+        // Render/display the weather data
+        var outputHTML = document.createElement('div');
+        outputHTML.innerHTML = `
+        <div class="overview" id="current">
+            <h1>${cityName} (Current)</h1>
+        
+            <p>Temp: ${currentTemp}\u00B0F</p>
+            <p>Wind: ${currentWind} MPH</p>
+            <p>Humidity: ${currentHumidity}%</p>
+            <p>UV Index: ${currentUVI}</p>
+        </div>
+        <div class="forcastRow" id="forcast">
+            <h3>5-Day Forcast:</h3>
+        </div>
+        `;
+
+        weatherEl.appendChild(outputHTML);
+
+        var forcastEl = document.getElementById('forcast');
+
+        // Rendering the 5-day forcast to the forcastEl
+        for(i = 1; i < 6; i++){
+            //Getting values for the day and putting them into variables
+            var temp = Math.round((data.daily[i].temp.min + data.daily[0].temp.max) / 2);
+            var wind = data.daily[i].wind_speed;
+            var humidity = data.daily[i].humidity;
+
+            outputHTML = document.createElement('div');
+            outputHTML.innerHTML = `
+            <div class="forcastItem">
+                <p>Temp: ${temp}\u00B0F</p>
+                <p>Wind: ${wind} MPH</p>
+                <p>Humidity: ${humidity}%</p>
+            </div>
+            `;
+
+            forcastEl.appendChild(outputHTML);
+        };
+
+    })
 }
